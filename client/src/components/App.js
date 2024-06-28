@@ -1,8 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "../pages/Home";
+import Login from "../pages/Login";
 
 function App() {
-  return <h1>Project Client</h1>;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    {fetch("/check_session")
+      .then((resp) => {
+        if (resp.ok) {
+          return resp.json()
+        }
+      }).then((user) => {
+        console.log(user)
+        setUser(user)
+      });
+    }
+  }, []);
+  
+  return (
+    <div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </div>
+  )
 }
 
 export default App;
