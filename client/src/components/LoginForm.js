@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { Form, Field } from "react-final-form";
-import { Button, Container } from "@mui/material";
+import { Button, Container, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import {Form as BootstrapForm } from "react-bootstrap";
 
 function LoginForm({ user, setUser }) {
     const navigate = useNavigate();
     const [submitting, setSubmitting] = useState(false);
 
     const LoginSchema = yup.object().shape({
-        username: yup.string().required("username required").min(4, "Your username must be at least 4 characters."),
-        password: yup.string().required("password required").min(8, "Your password must be at least 8 characters.")
+        username: yup.string().required("username required").min(4, "Your username must contain at least 4 characters."),
+        password: yup.string().required("password required").min(8, "Your password must contain at least 8 characters.")
     });
 
     const handleSubmit = async (values) => {
@@ -40,74 +39,75 @@ function LoginForm({ user, setUser }) {
         setSubmitting(false);
     };
 
-
-const validate = values => {
-    const errors = {};
-    try {
-        LoginSchema.validateSync(values, { abortEarly: false });
-    } catch (yupError) {
-        yupError.inner.forEach(error => {
-            errors[error.path] = error.message;
-        });
-    }
-    return errors;
-};   
+    const validate = values => {
+        const errors = {};
+        try {
+            LoginSchema.validateSync(values, { abortEarly: false });
+        } catch (yupError) {
+            yupError.inner.forEach(error => {
+                errors[error.path] = error.message;
+            });
+        }
+        return errors;
+    };   
 
     return (
-        <Container className="login-container">
+        <Container maxWidth="sm" className="login-container">
+            <Typography variant="h4" align="center" gutterBottom>
+                Login
+            </Typography>
             <Form
-            onSubmit={handleSubmit}
-            validate={validate}
-            render={({ handleSubmit, pristine }) => (
-                <BootstrapForm className="login-form" onSubmit={handleSubmit}>
-                    <Field name="username">
-                        {({ input, meta }) => (
-                            <BootstrapForm.Group className="mb-3">
-                                <BootstrapForm.Label>Username:</BootstrapForm.Label>
-                                <BootstrapForm.Control
-                                    {...input}
-                                    type="text"
-                                    placeholder="Enter username"
-                                    isInvalid={meta.touched && meta.error}
+                onSubmit={handleSubmit}
+                validate={validate}
+                render={({ handleSubmit, pristine }) => (
+                    <form onSubmit={handleSubmit}>
+                        <Field name="username">
+                            {({ input, meta }) => (
+                                <div>
+                                    <TextField 
+                                        {...input}
+                                        label="Username"
+                                        variant="outlined"
+                                        fullWidth
+                                        margin="normal"
+                                        type="text"
+                                        error={meta.touched && meta.error}
+                                        helperText={meta.touched && meta.error ? meta.error : ""}
                                     />
-                                    {meta.touched && meta.error && (
-                                        <BootstrapForm.Control.Feedback type="invalid">
-                                            {meta.error}
-                                        </BootstrapForm.Control.Feedback>
-                                    )}
-                            </BootstrapForm.Group>
-                        )}
-                    </Field>
-                    <Field name="password">
-                        {({ input, meta }) =>
-                        <BootstrapForm.Group className="mb-3">
-                            <BootstrapForm.Label>Password:</BootstrapForm.Label>
-                            <BootstrapForm.Control
-                                {...input}
-                                type="password"
-                                placeholder="Password"
-                                inInvalid={meta.touched && meta.error}
-                            />
-                            {meta.touched && meta.error && (
-                                <BootstrapForm.Control.Feedback type="invalid">
-                                    {meta.error}
-                                </BootstrapForm.Control.Feedback>
+                                </div>
                             )}
-                        </BootstrapForm.Group>
-                        }
-                    </Field>
-                    <Button
-                        className="login-button"
-                        type="submit"
-                        disabled={submitting || pristine}
+                        </Field>
+                        <Field name="password">
+                            {({ input, meta }) => (
+                                <div>
+                                    <TextField 
+                                        {...input}
+                                        label="Password"
+                                        type="password"
+                                        variant="outlined"
+                                        fullWidth
+                                        margin="normal"
+                                        error={meta.touched && meta.error}
+                                        helperText={meta.touched && meta.error ? meta.error : ""}
+                                    />
+                                </div>
+                            )}
+                        </Field>
+                        <Button
+                            style={{backgroundColor:"#748B6F"}}
+                            type="submit"
+                            variant="contained"
+                            //color=""
+                            disabled={submitting || pristine}
+                            fullWidth
                         >
                             Log In 
                         </Button>
-                </BootstrapForm>
-            )}
+                    </form>
+                )}
             />
         </Container>
     );
-}
+};
 
 export default LoginForm;

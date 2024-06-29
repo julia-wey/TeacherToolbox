@@ -72,7 +72,7 @@ class Teacher(db.Model, SerializerMixin):
         if not new_password:
             raise ValueError("You must have a password.")
         if len(new_password) < 8:
-            raise ValueError("Your password must be at least 8 characters")
+            raise ValueError("Your password must be at least 8 characters.")
         if not any(char.isdigit() for char in new_password):
             raise ValueError("Your password must have at least one number.")
         return new_password
@@ -112,4 +112,5 @@ class Strategy(db.Model, SerializerMixin):
 
         def __repr__(self):
             return f"<Reflection {self.id}: strategy: {self.strategy_id}, teacher: {self.teacher_id}, reflection:{self.reflection}>"
+    
     
