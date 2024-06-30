@@ -6,18 +6,26 @@ import * as yup from "yup";
 
 function LoginForm({ setUser }) {
     const navigate = useNavigate();
-    const [submitting, setSubmitting] = useState(false);
-
-    const LoginSchema = yup.object().shape({
+    
+    const loginSchema = yup.object().shape({
         username: yup.string().required("username required").min(4, "Your username must contain at least 4 characters."),
         password: yup.string().required("password required").min(8, "Your password must contain at least 8 characters.")
     });
 
+    const validate = values => {
+        const errors = {};
+        try {
+            loginSchema.validateSync(values, { abortEarly: false });
+        } catch (yupError) {
+            yupError.inner.forEach(error => {
+                errors[error.path] = error.message;
+            });
+        }
+        return errors;
+    };  
 
     const handleSubmit = (values) => {
-        const endpoint = '/login'
-        //signup ? '/signup' : '/login'
-        fetch(endpoint, {
+        fetch('/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -26,34 +34,24 @@ function LoginForm({ setUser }) {
                 }).then((resp) => {
                     if (resp.ok) {
                         resp.json().then((user) => {
-                            setUser(user)
-                        })
+                            setUser(user);
+                            navigate('/');
+                            //navigate somewhere after login/signup (teacher page) 
+                        });
                     } else {
                         console.log("errors")
                     }
-                })
-    }
-
-    // const validate = values => {
-    //     const errors = {};
-    //     try {
-    //         LoginSchema.validateSync(values, { abortEarly: false });
-    //     } catch (yupError) {
-    //         yupError.inner.forEach(error => {
-    //             errors[error.path] = error.message;
-    //         });
-    //     }
-    //     return errors;
-    // };   
+                });
+    };
 
     return (
         <Container maxWidth="sm" className="login-container">
             <Typography variant="h4" align="center" gutterBottom>
-                Login
+                Log In
             </Typography>
             <Form
                 onSubmit={handleSubmit}
-                //validate={validate}
+                validate={validate}
                 render={({ handleSubmit, pristine }) => (
                     <form onSubmit={handleSubmit}>
                         <Field name="username">
@@ -89,14 +87,13 @@ function LoginForm({ setUser }) {
                             )}
                         </Field>
                         <Button
-                            style={{backgroundColor:"#748B6F"}}
+                            style={{backgroundColor:"#748B6F", color:"#2A403D"}}
                             type="submit"
                             variant="contained"
-                            //color=""
-                            disabled={submitting || pristine}
+                            disabled={pristine}
                             fullWidth
                         >
-                            Log In 
+                            Log In
                         </Button>
                     </form>
                 )}
