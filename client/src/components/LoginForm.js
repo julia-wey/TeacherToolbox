@@ -13,31 +13,64 @@ function LoginForm({ user, setUser }) {
         password: yup.string().required("password required").min(8, "Your password must contain at least 8 characters.")
     });
 
-    const handleSubmit = async (values) => {
-        setSubmitting(true);
-        console.log("form submitted");
+    const handleSubmit = async (values, form) => {
+        setSubmitting(true); // Start submitting
+    
         try {
+            // Validate form data
+            await LoginSchema.validate(values, { abortEarly: false });
+    
+            // Send login request
             const response = await fetch("/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
-            },
+                },
                 body: JSON.stringify(values)
-        });
-
-        if (response.of) {
-            const user = await response.json();
-            setUser(user);
-            console.log(user);
-            setTimeout(() => navigate("/"), 500);
-        } else {
-            alert("Invalid credentials");
-        }
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            console.log("Login successful:", data);
+    
+            // Update user state or navigate on success
+            setUser(data.user); // Assuming 'data.user' contains user info
+            navigate("/dashboard"); // Redirect to dashboard or another page
+    
         } catch (error) {
-            console.error("Login failed", error);
+            console.error("Login error:", error);
+            // Handle error state or display error message
+        } finally {
+            setSubmitting(false); // Ensure to reset submitting state after fetch completes
         }
-        setSubmitting(false);
     };
+    // const handleSubmit = async (values) => {
+    //     setSubmitting(true);
+    //     console.log("form submitted");
+    //     const fetchPromise = fetch("/login", {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify(values)
+    //             });
+
+    //     fetchPromise.then(response => {
+    //         if (response.ok) {
+    //             return response.json();
+    //         } else {
+    //             throw new Error(`HTTP error! Status: ${response.status}`);
+    //         }
+    //     }).then(data => {
+    //         console.log(data);
+    //     }).catch(error => {
+    //         console.error('Fetch error:', error);
+    //     });
+    // }
+    
 
     const validate = values => {
         const errors = {};
@@ -108,6 +141,6 @@ function LoginForm({ user, setUser }) {
             />
         </Container>
     );
-};
+}
 
 export default LoginForm;

@@ -4,20 +4,20 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 
 function App() {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    {fetch("/check_session")
-      .then((resp) => {
-        if (resp.ok) {
-          return resp.json()
-        }
-      }).then((user) => {
-        console.log(user)
-        setUser(user)
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   {fetch("/check_session")
+  //     .then((resp) => {
+  //       if (resp.ok) {
+  //         return resp.json()
+  //       }
+  //     }).then((user) => {
+  //       console.log(user)
+  //       setUser(user)
+  //     });
+  //   }
+  // }, []);
   
   return (
     <div>
