@@ -1,4 +1,5 @@
 from sqlalchemy_serializer import SerializerMixin
+
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
 from flask_bcrypt import Bcrypt
@@ -9,10 +10,10 @@ bcrypt = Bcrypt(app)
 class Teacher(db.Model, SerializerMixin):
     __tablename__ = 'teachers'
 
-    serialize_rules = ('-password_hash',)
+    serialize_rules = ('-_password_hash', '-reflections.teacher')
 
     __table_args__ = (
-        db.CheckConstraint('length(username) > 3', name='username_length_over_3')
+        db.CheckConstraint('length(username) > 3', name='username_length_over_3'),
     )
 
     id=db.Column(db.Integer, primary_key=True)
@@ -23,7 +24,7 @@ class Teacher(db.Model, SerializerMixin):
     _password_hash=db.Column(db.String, nullable=False)
 
     reflections = db.relationship('Reflection', back_populates='teacher', cascade='all, delete-orphan')
-    strategies = association_proxy('reflections', 'strategy')
+    #strategies = association_proxy('reflections', 'strategy')
 
     def __repr__(self):
         return f"<Teacher {self.id}: {self.first_name}{self.last_name}, {self.username}>"
@@ -80,13 +81,16 @@ class Teacher(db.Model, SerializerMixin):
 class Strategy(db.Model, SerializerMixin):
     __tablename__ = 'strategies'
 
+    serialize_rules = ('-description', '-instructions')
+
     id=db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String, unique=True, nullable=False)
     description=db.Column(db.String)
     instructions=db.Column(db.Text)
 
     reflections = db.relationship('Reflection', back_populates='strategy', cascade='all, delete-orphan')
-    teachers = association_proxy('reflections', 'teacher')
+    #get clear on cascade all
+    #teachers = association_proxy('reflections', 'teacher')
 
     def __repr__(self):
         return f"<Strategy {self.id}: {self.name}, {self.description}, {self.instructions}>"
@@ -97,20 +101,20 @@ class Strategy(db.Model, SerializerMixin):
             raise ValueError("Strategy name is required.")
         return new_name
     
-    class Reflection(db.Model, SerializerMixin):
-        __tablename__ = "refelctions"
+class Reflection(db.Model, SerializerMixin):
+    __tablename__ = "reflections"
 
-        serialize_rules = ("-teacher.reflections", "-strategy.reflections",)
+    serialize_rules = ("-teacher.reflections", "-strategy.id", "-strategy.reflections")
 
-        id=db.Column(db.Integer, primary_key=True)
-        reflection=db.Column(db.Text, nullable=False)
-        strategy_id=db.Column(db.Integer, db.ForeignKey('strategies.id'), nullable=False)
-        teacher_id=db.Column(db.Integer, db.ForeignKey('teachers.id'))
+    id=db.Column(db.Integer, primary_key=True)
+    content=db.Column(db.Text, nullable=False)
+    strategy_id=db.Column(db.Integer, db.ForeignKey('strategies.id'), nullable=False)
+    teacher_id=db.Column(db.Integer, db.ForeignKey('teachers.id'), nullable=False)
 
-        teacher = db.relationship('Teacher', back_populates='reflections')
-        strategy = db.relationship('Strategy', back_populates='reflections')
+    teacher = db.relationship('Teacher', back_populates='reflections')
+    strategy = db.relationship('Strategy', back_populates='reflections')
 
-        def __repr__(self):
-            return f"<Reflection {self.id}: strategy: {self.strategy_id}, teacher: {self.teacher_id}, reflection:{self.reflection}>"
+    def __repr__(self):
+        return f"<Reflection {self.id}: strategy: {self.strategy_id}, teacher: {self.teacher_id}, refelction:{self.content}>"
     
-    
+
