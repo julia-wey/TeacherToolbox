@@ -1,8 +1,33 @@
 import React from "react";
-import App from "./components/App";
+import ReactDOM from "react-dom/client";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./index.css";
-import { createRoot } from "react-dom/client";
+//import "bootstrap/dist/css/bootstrap.min.css";
+import App from "./App.js";
+import Login from "./pages/Login.js";
+import Signup from "./pages/Signup.js";
+import Home from "./pages/Home.js";
 
-const container = document.getElementById("root");
-const root = createRoot(container);
-root.render(<App />);
+const routes = [
+    {
+        path: '/',
+        element: <Home /> 
+    },
+    {
+        path: '/login',
+        element: <Login />
+    },
+    {
+        path: '/signup',
+        element: <Signup />
+    }
+]
+
+const router = createBrowserRouter(routes)
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+    <React.StrictMode>
+        <RouterProvider router={router} />
+    </React.StrictMode>
+);
