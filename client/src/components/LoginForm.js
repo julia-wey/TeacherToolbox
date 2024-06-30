@@ -4,7 +4,7 @@ import { Button, Container, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
-function LoginForm({ user, setUser }) {
+function LoginForm({ setUser }) {
     const navigate = useNavigate();
     const [submitting, setSubmitting] = useState(false);
 
@@ -13,76 +13,38 @@ function LoginForm({ user, setUser }) {
         password: yup.string().required("password required").min(8, "Your password must contain at least 8 characters.")
     });
 
-    const handleSubmit = async (values, form) => {
-        setSubmitting(true); // Start submitting
-    
-        try {
-            // Validate form data
-            await LoginSchema.validate(values, { abortEarly: false });
-    
-            // Send login request
-            const response = await fetch("/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
+
+    const handleSubmit = (values) => {
+        const endpoint = '/login'
+        //signup ? '/signup' : '/login'
+        fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(values)
-            });
-    
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-    
-            const data = await response.json();
-            console.log("Login successful:", data);
-    
-            // Update user state or navigate on success
-            setUser(data.user); // Assuming 'data.user' contains user info
-            navigate("/dashboard"); // Redirect to dashboard or another page
-    
-        } catch (error) {
-            console.error("Login error:", error);
-            // Handle error state or display error message
-        } finally {
-            setSubmitting(false); // Ensure to reset submitting state after fetch completes
-        }
-    };
-    // const handleSubmit = async (values) => {
-    //     setSubmitting(true);
-    //     console.log("form submitted");
-    //     const fetchPromise = fetch("/login", {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json"
-    //             },
-    //             body: JSON.stringify(values)
-    //             });
+                }).then((resp) => {
+                    if (resp.ok) {
+                        resp.json().then((user) => {
+                            setUser(user)
+                        })
+                    } else {
+                        console.log("errors")
+                    }
+                })
+    }
 
-    //     fetchPromise.then(response => {
-    //         if (response.ok) {
-    //             return response.json();
-    //         } else {
-    //             throw new Error(`HTTP error! Status: ${response.status}`);
-    //         }
-    //     }).then(data => {
-    //         console.log(data);
-    //     }).catch(error => {
-    //         console.error('Fetch error:', error);
-    //     });
-    // }
-    
-
-    const validate = values => {
-        const errors = {};
-        try {
-            LoginSchema.validateSync(values, { abortEarly: false });
-        } catch (yupError) {
-            yupError.inner.forEach(error => {
-                errors[error.path] = error.message;
-            });
-        }
-        return errors;
-    };   
+    // const validate = values => {
+    //     const errors = {};
+    //     try {
+    //         LoginSchema.validateSync(values, { abortEarly: false });
+    //     } catch (yupError) {
+    //         yupError.inner.forEach(error => {
+    //             errors[error.path] = error.message;
+    //         });
+    //     }
+    //     return errors;
+    // };   
 
     return (
         <Container maxWidth="sm" className="login-container">
@@ -91,7 +53,7 @@ function LoginForm({ user, setUser }) {
             </Typography>
             <Form
                 onSubmit={handleSubmit}
-                validate={validate}
+                //validate={validate}
                 render={({ handleSubmit, pristine }) => (
                     <form onSubmit={handleSubmit}>
                         <Field name="username">

@@ -1,12 +1,12 @@
 from sqlalchemy_serializer import SerializerMixin
 #from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
-from config import db, app
+from config import db, bcrypt, app
 
 class Teacher(db.Model, SerializerMixin):
     __tablename__ = 'teachers'
 
-    serialize_rules = ('-password', '-reflections.teacher')
+    serialize_rules = ('-_password_hash', '-reflections.teacher')
 
     __table_args__ = (
         db.CheckConstraint('length(username) > 3', name='username_length_over_3'),
@@ -17,7 +17,7 @@ class Teacher(db.Model, SerializerMixin):
     last_name=db.Column(db.String, nullable=False)
     username=db.Column(db.String, unique=True, nullable=False)
     team=db.Column(db.String, nullable=False)
-    password=db.Column(db.String, nullable=False)
+    _password_hash=db.Column(db.String, nullable=False)
 
     reflections = db.relationship('Reflection', back_populates='teacher', cascade='all, delete-orphan')
     #strategies = association_proxy('reflections', 'strategy')
@@ -25,8 +25,16 @@ class Teacher(db.Model, SerializerMixin):
     def __repr__(self):
         return f"<Teacher {self.id}: {self.first_name} {self.last_name}, {self.username}>"
 
+    @property
+    def password_hash(self):
+        return self._password_hash 
+
+    @password_hash.setter
+    def password_hash(self, password):
+        self._password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+
     def authenticate(self, password):
-        return self.password == password
+        return bcrypt.check_password_hash(self._password_hash, password)
     
     @validates('first_name')
     def validate_first_name(self, key, new_first_name):
@@ -56,7 +64,7 @@ class Teacher(db.Model, SerializerMixin):
             raise ValueError("Make sure to add your team.")
         return new_team
     
-    @validates('password')
+    @validates('_password_hash')
     def validates_password(self, key, new_password):
         if not new_password:
             raise ValueError("You must have a password.")
