@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SignupForm from "../components/SignupForm";
 
-function Signup() {
+function Signup({ user, setUser }) {
+    const navigate = useNavigate();
+
     return (
         <div>
             <h1>Sign Up</h1>
-            <SignupForm />
+            <SignupForm user={user} setUser={setUser} />
         </div>
     )
 }

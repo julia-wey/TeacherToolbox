@@ -1,5 +1,4 @@
 from sqlalchemy_serializer import SerializerMixin
-#from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
 from config import db, bcrypt, app
 
@@ -20,7 +19,6 @@ class Teacher(db.Model, SerializerMixin):
     _password_hash=db.Column(db.String, nullable=False)
 
     reflections = db.relationship('Reflection', back_populates='teacher', cascade='all, delete-orphan')
-    #strategies = association_proxy('reflections', 'strategy')
 
     def __repr__(self):
         return f"<Teacher {self.id}: {self.first_name} {self.last_name}, {self.username}>"
@@ -31,7 +29,7 @@ class Teacher(db.Model, SerializerMixin):
 
     @password_hash.setter
     def password_hash(self, password):
-        self._password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+        self._password_hash = bcrypt.generate_password_hash(password.encode('utf-8')).decode('utf-8')
 
     def authenticate(self, password):
         return bcrypt.check_password_hash(self._password_hash, password)
@@ -86,7 +84,6 @@ class Strategy(db.Model, SerializerMixin):
 
     reflections = db.relationship('Reflection', back_populates='strategy', cascade='all, delete-orphan')
     #get clear on cascade all
-    #teachers = association_proxy('reflections', 'teacher')
 
     def __repr__(self):
         return f"<Strategy {self.id}: {self.name}, {self.description}, {self.instructions}>"

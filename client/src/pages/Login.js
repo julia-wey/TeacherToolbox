@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import LoginForm from "../components/LoginForm.js";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Login({ user, setUser }) {
 
     const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ function Login() {
                     Sign Up
                 </Button>
             </h4>
-            <LoginForm />
+            <LoginForm user={user} setUser={setUser}/>
         </div>
     )
 }

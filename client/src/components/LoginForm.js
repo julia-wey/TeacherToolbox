@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Field } from "react-final-form";
 import { Button, Container, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
-function LoginForm({ setUser }) {
+function LoginForm({ user, setUser}) {
     const navigate = useNavigate();
     
+    console.log({user, setUser});
+
     const loginSchema = yup.object().shape({
         username: yup.string().required("username required").min(4, "Your username must contain at least 4 characters."),
         password: yup.string().required("password required").min(8, "Your password must contain at least 8 characters.")
@@ -32,8 +34,10 @@ function LoginForm({ setUser }) {
                 },
                 body: JSON.stringify(values)
                 }).then((resp) => {
+                    console.log('Login responser:', resp);
                     if (resp.ok) {
                         resp.json().then((user) => {
+                            console.log('Logged in user:', user);
                             setUser(user);
                             navigate('/');
                             //navigate somewhere after login/signup (teacher page) 

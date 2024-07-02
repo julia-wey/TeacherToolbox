@@ -21,9 +21,12 @@ if __name__ == '__main__':
         Strategy.query.delete()
         db.session.commit()
 
-        t1= Teacher(first_name="Julia", last_name="Wey", username="jwey", team="Social Studies", _password_hash="password1")
-        t2= Teacher(first_name="Dan", last_name="Burgoyne", username="dburgoyne", team="ELA", _password_hash="mypassword2")
-        t3= Teacher(first_name="Debbie", last_name="Weys", username="dwey", team="Math", _password_hash="thepassword3")
+        t1= Teacher(first_name="Julia", last_name="Wey", username="jwey", team="Social Studies")
+        t1.password_hash="password1"
+        t2= Teacher(first_name="Dan", last_name="Burgoyne", username="dburgoyne", team="ELA")
+        t2.password_hash="mypassword2"
+        t3= Teacher(first_name="Debbie", last_name="Weys", username="dwey", team="Math")
+        t3.password_hash="thepassword3"
 
         db.session.add_all([t1, t2, t3])
         db.session.commit()
