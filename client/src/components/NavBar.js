@@ -48,7 +48,7 @@ function NavBar() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ms-auto pt-2">
-                    <Nav.Link className="nav-link" href="/teachers/<int:id>">Teacher Page</Nav.Link>
+                    <Nav.Link className="nav-link" href="/teachers">Teacher Page</Nav.Link>
                     <Nav.Link className="nav-link" href="/strategies">Strategies</Nav.Link>
                     {/* <Nav.Link className="nav-link" href="/signup">Sign Up</Nav.Link>
                     <Nav.Link className="nav-link" href="/login">Login</Nav.Link> */}

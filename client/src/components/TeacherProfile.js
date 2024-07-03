@@ -6,6 +6,8 @@ import { AppContext } from "../context/Context";
 function TeacherProfile({user, teacher}) {
     const {first_name, last_name, team} = teacher
     const navigate = useNavigate;
+
+    
     
     return (
         <main>
@@ -23,6 +25,7 @@ function TeacherProfile({user, teacher}) {
                   </Card.Text>
                   <Card.Link href="#">Update Profile</Card.Link>
                   <Card.Link href="#">Delete Profile</Card.Link>
+              {/* add handleDelete above and button */}
                 </Card.Body>
               </Card>
               </div>

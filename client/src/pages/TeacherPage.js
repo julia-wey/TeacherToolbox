@@ -15,10 +15,6 @@ function TeacherPage({ user, setUser }) {
     
     useEffect(() => {
         if (!user) {
-            navigate('/login');
-            return;
-        }
-
         fetch('/check-session')
             .then((resp) => {
                 if (resp.ok) {
@@ -29,32 +25,40 @@ function TeacherPage({ user, setUser }) {
             })
             .then((data) => {
                 setTeacher(data);
+                setLoading(false);
             })
             .catch((error) => {
                 console.error("Error fetching teacher data:", error);
-            });
+                
+                    navigate('/login');
+                    return;
+                
+            }) 
+        } else {
+            setLoading(false);
+        }
         }, [user, setUser, navigate]);
     
 
-    useEffect(() => {
-        fetch(`/teachers/${id}`)
-            .then((resp) => {
-                if (resp.ok) {
-                    return resp.json();
-                } else {
-                    throw new Error("Failed to fetch teacher data.");
-                }
-            })
-            .then((data) => {
-                setTeacher(data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching teacher data:", error);
-                setError(error);
-                setLoading(false);
-            });
-         }, [id]);
+    // useEffect(() => {
+    //     fetch(`/teachers/${id}`)
+    //         .then((resp) => {
+    //             if (resp.ok) {
+    //                 return resp.json();
+    //             } else {
+    //                 throw new Error("Failed to fetch teacher data.");
+    //             }
+    //         })
+    //         .then((data) => {
+    //             setTeacher(data);
+    //             setLoading(false);
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error fetching teacher data:", error);
+    //             setError(error);
+    //             setLoading(false);
+    //         });
+    //      }, [id]);
 
          if (loading) {
             return <div>Loading...</div>;
@@ -81,7 +85,7 @@ function TeacherPage({ user, setUser }) {
                  <TeacherProfile user={user} 
                     key={teacher.id}
                     teacher={teacher}
-                    />;
+                    />
                 
                       
                 </div>

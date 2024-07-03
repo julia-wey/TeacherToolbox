@@ -1,11 +1,14 @@
 import React from "react";
-import NavBar from "../components/NavBar.js";
+import TeacherRefCard from "./TeacherRefCard.js";
 
 function TeacherReflections() {
+    // add a fetch here for teacher by id reflections
+    //pass into cards 
     return (
         <main>
-            <NavBar />
             <h1>Your Reflections</h1>
+            <TeacherRefCard />
+            
         </main>
     )
 }
