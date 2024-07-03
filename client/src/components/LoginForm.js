@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Form, Field } from "react-final-form";
 import { Button, Container, TextField, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 
 function LoginForm({ user, setUser}) {
     const navigate = useNavigate();
+    let { id } = useParams();
     
     console.log({user, setUser});
 
@@ -39,8 +40,7 @@ function LoginForm({ user, setUser}) {
                         resp.json().then((user) => {
                             console.log('Logged in user:', user);
                             setUser(user);
-                            navigate('/');
-                            //navigate somewhere after login/signup (teacher page) 
+                            navigate(`/teachers/${user.id}`);
                         });
                     } else {
                         console.log("errors")

@@ -40,48 +40,34 @@ class Signup(Resource):
 
 class CheckSession(Resource):
     def get(self):
-        teacher_id = session.get('teacher_id')
-        if teacher_id:
-            teacher = db.session.get(Teacher, teacher_id)
-            if teacher:
-                return make_response(teacher.to_dict(), 200)
+        if 'teacher_id' in session:
+            teacher_id = session.get('teacher_id')
+            if teacher_id:
+                teacher = db.session.get(Teacher, teacher_id)
+                if teacher:
+                    return make_response(teacher.to_dict(), 200)
         return make_response({'error': 'Unauthorized: must login'}, 401)
 
 class Logout(Resource):
     def delete(self):
         print("loggin out")
         session['teacher_id'] = None
-        #session.pop('teacher_id', None)
         return make_response({}, 204)
-
-#class Login(Resource):
-    #def post(self):
-        #if request.content_type != 'application/json':
-            #return make_response({"message": "Content-Type must be application/json"}, 400)
-        #params = request.get_json()
-        #teacher = Teacher.query.filter_by(username=params.get("username")).first()
-        #if not teacher:
-            #return make_response({'error': 'teacher not found'}, 404)
-        #if teacher.authenticate(params.get('password')):
-            #session['teacher_id'] = teacher.id
-            #return make_response(teacher.to_dict())
-        #else:
-            #return make_response({"error": "Invalid password."}, 401)
-
-
 
 class Login(Resource):
     def post(self):
-        params = request.json
+        if request.content_type != 'application/json':
+            return make_response({"message": "Content-Type must be application/json"}, 400)
+        params = request.get_json()
         teacher = Teacher.query.filter_by(username=params.get("username")).first()
         if not teacher:
             return make_response({'error': 'teacher not found'}, 404)
-        
         if teacher.authenticate(params.get('password')):
             session['teacher_id'] = teacher.id
             return make_response(teacher.to_dict())
         else:
-            return make_response({'error': 'invalid password'}, 401)
+            return make_response({"error": "Invalid password."}, 401)
+
 
 class Teachers(Resource):
     def get(self):
@@ -108,12 +94,12 @@ class Teachers(Resource):
 
 class TeacherById(Resource):
     def get(self, id):
-        teacher = Teacher.query.get(id)
+        teacher = db.session.get(Teacher, id)
         if teacher:
             return make_response(teacher.to_dict())
-
+        
     def patch(self, id):
-        teacher = Teacher.query.get(id)
+        teacher = db.session.get(Teacher, id)
         if teacher:
             params = request.json
             for attr in params:
@@ -122,23 +108,12 @@ class TeacherById(Resource):
             return make_response(teacher.to_dict())
 
     def delete(self, id):
-        teacher = Teacher.query.get(id)
+        teacher = db.session.get(Teacher, id)
         if teacher:
             db.session.delete(teacher)
             db.session.commit()
             return make_response({'message': 'successfully deleted teacher'})
         
-
-
-
-
-
-
-
-
-
-
-
 
 #@app.before_request
 #def check_log_status():
@@ -149,51 +124,12 @@ class TeacherById(Resource):
     #if request.endpoint not in open_access_list and (not session.get('teacher_id')):
         #return make_response({"error": "401 Unauthorized"}, 401)
 
-
-#class Login(Resource):
-    #def post(self):
-        #if request.content_type != 'application/json':
-            #return make_response({"message": "Content-Type must be application/json"}, 400)
-        #params = request.get_json()
-        #teacher = Teacher.query.filter_by(username=params.get("username")).first()
-        #if not teacher:
-            #return make_response({'error': 'teacher not found'}, 404)
-        #if teacher.authenticate(params.get('password')):
-            #session['teacher_id'] = teacher.id
-            #return make_response(teacher.to_dict())
-        #else:
-            #return make_response({"error": "Invalid password."}, 401)
-
-#class Logout(Resource):
-    #def delete(self):
-        #print("loggin out")
-        #session.pop('teacher_id', None)
-        #return make_response({}, 204)
-
-#class CheckSession(Resource):
-    #def get(self):
-        #if 'teacher_id' in session:
-            #teacher_id = session['teacher_id']
-            #if teacher_id:
-                #teacher = db.session.get(Teacher, teacher_id)
-                #if teacher:
-                    #return make_response(teacher.to_dict(), 200)
-        #return make_response({"error": "Unauthorized: must login"}, 401)
-
-
-
-
 api.add_resource(Signup, '/signup')
 api.add_resource(CheckSession, '/check-session')
 api.add_resource(Logout, '/logout')
 api.add_resource(Login, '/login')
 api.add_resource(Teachers, '/teachers')
 api.add_resource(TeacherById, '/teachers/<int:id>')
-
-
-#api.add_resource(Login, '/login')
-#api.add_resource(Logout, '/logout', endpoint='logout')
-#api.add_resource(CheckSession, '/check-session', endpoint='check-session')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

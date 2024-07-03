@@ -1,13 +1,13 @@
 import React from "react";
 import NavBar from "../components/NavBar.js";
 
-function Home() {
+function TeacherReflections() {
     return (
         <main>
             <NavBar />
-            <h1>Home Page</h1>
+            <h1>Your Reflections</h1>
         </main>
     )
 }
 
-export default Home;
+export default TeacherReflections;
