@@ -28,11 +28,9 @@ function TeacherPage({ user, setUser }) {
                 setLoading(false);
             })
             .catch((error) => {
-                console.error("Error fetching teacher data:", error);
-                
+                console.error("Error fetching teacher data:", error);  
                     navigate('/login');
                     return;
-                
             }) 
         } else {
             setLoading(false);
@@ -82,12 +80,13 @@ function TeacherPage({ user, setUser }) {
                 </div>
                 <div className="right-div-teacherpage">
                 
-                 <TeacherProfile user={user} 
+                 <TeacherProfile 
+                    user={user} 
+                    setUser={setUser} 
                     key={teacher.id}
                     teacher={teacher}
-                    />
-                
-                      
+                    setTeacher={setTeacher}
+                    />      
                 </div>
             </div>  
         </main>

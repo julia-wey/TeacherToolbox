@@ -113,8 +113,18 @@ class TeacherById(Resource):
             db.session.delete(teacher)
             db.session.commit()
             return make_response({'message': 'successfully deleted teacher'})
-        
 
+class TeacherReflections(Resource):
+    def get(self, id):
+        teacher = db.session.get(Teacher, id)
+        if not teacher:
+            return make_response({'error': 'Teacher not found.'}, 404)
+
+        reflections = Reflection.query.filter_by(teacher_id=id).all()
+        reflections_list = [reflection.to_dict() for reflection in reflections]
+
+        return make_response(reflections_list, 200)
+    
 #@app.before_request
 #def check_log_status():
     #open_access_list = [
@@ -130,6 +140,7 @@ api.add_resource(Logout, '/logout')
 api.add_resource(Login, '/login')
 api.add_resource(Teachers, '/teachers')
 api.add_resource(TeacherById, '/teachers/<int:id>')
+api.add_resource(TeacherReflections, '/teachers/<int:id>/reflections')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
