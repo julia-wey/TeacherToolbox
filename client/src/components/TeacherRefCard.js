@@ -2,7 +2,7 @@ import React from "react";
 import Card from 'react-bootstrap/Card';
 
 function TeacherRefCard({key, content, strategy_id, teacher_id}) {
-  // pass in props for card
+
     return (
         <main>
             

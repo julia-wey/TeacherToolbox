@@ -35,7 +35,7 @@ function App() {
             <Route path="/signup" element={<Signup user={user} setUser={setUser} />} />
             <Route path="/teachers" element={<TeacherPage user={user} setUser={setUser} />} />
             <Route path="/teachers/:id" element={<TeacherPage user={user} setUser={setUser} />} />
-            <Route path="/teachers/:id/reflections" element={<TeacherReflections user={user} />} />
+            {/* <Route path="/teachers/:id/reflections" element={<TeacherReflections user={user} />} /> */}
           </Routes>
         </div>
       </AppContext.Provider>

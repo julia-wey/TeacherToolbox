@@ -124,6 +124,14 @@ class TeacherReflections(Resource):
         reflections_list = [reflection.to_dict() for reflection in reflections]
 
         return make_response(reflections_list, 200)
+
+class Strategies(Resource):
+    def get(self): 
+        all_strategies = []
+        for strategy in Strategy.query.all():
+            all_strategies.append(strategy.to_dict())
+        
+        return make_response(all_strategies)
     
 #@app.before_request
 #def check_log_status():
@@ -141,6 +149,7 @@ api.add_resource(Login, '/login')
 api.add_resource(Teachers, '/teachers')
 api.add_resource(TeacherById, '/teachers/<int:id>')
 api.add_resource(TeacherReflections, '/teachers/<int:id>/reflections')
+api.add_resource(Strategies, '/strategies')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
