@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../context/Context";
 import TeacherRefCard from "./TeacherRefCard.js";
+import AddReflection from "./AddReflection.js";
 
 function TeacherReflections() {
     const { id } = useParams();
@@ -41,6 +42,7 @@ function TeacherReflections() {
     
     return (
         <main>
+            <AddReflection user={user} />
             <h1>Your Reflections</h1>
             <div>
                 {reflections.map(reflection => (
@@ -52,6 +54,7 @@ function TeacherReflections() {
                 />
                 ))}
             </div>
+            
         </main>
     );
 }

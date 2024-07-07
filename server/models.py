@@ -75,7 +75,7 @@ class Teacher(db.Model, SerializerMixin):
 class Strategy(db.Model, SerializerMixin):
     __tablename__ = 'strategies'
 
-    serialize_rules = ('-description', '-instructions')
+    # serialize_rules = ('-description', '-instructions')
 
     id=db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String, unique=True, nullable=False)

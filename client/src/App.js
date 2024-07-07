@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup.js";
 import TeacherPage from "./pages/TeacherPage.js";
+import StrategyPage from "./pages/StrategyPage.js";
 import TeacherReflections from "./components/TeacherReflections.js";
 import { AppContext } from "./context/Context"
 
@@ -35,6 +36,7 @@ function App() {
             <Route path="/signup" element={<Signup user={user} setUser={setUser} />} />
             <Route path="/teachers" element={<TeacherPage user={user} setUser={setUser} />} />
             <Route path="/teachers/:id" element={<TeacherPage user={user} setUser={setUser} />} />
+            <Route path="/strategies" element={<StrategyPage user={user} setUser={setUser} />} />
             {/* <Route path="/teachers/:id/reflections" element={<TeacherReflections user={user} />} /> */}
           </Routes>
         </div>
