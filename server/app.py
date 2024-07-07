@@ -133,14 +133,32 @@ class Strategies(Resource):
         
         return make_response(all_strategies)
     
-#@app.before_request
-#def check_log_status():
-    #open_access_list = [
-        #'login',
-        #'check_session'
-    #]
-    #if request.endpoint not in open_access_list and (not session.get('teacher_id')):
-        #return make_response({"error": "401 Unauthorized"}, 401)
+class StrategyReflections(Resource):
+    def get(self, strategy_id):
+        reflections = Reflection.query.filter_by(strategy_id=strategy_id).all()
+        return make_response([reflection.to_dict() for reflection in reflections], 200)
+
+class Reflections(Resource):
+    def post(self):
+        data = request.json
+        content = data.get('content')
+        strategy_id = data.get('strategy_id')
+        teacher_id = session.get('teacher_id')
+
+        if not content or not strategy_id or not teacher_id:
+            return make_response({'error': 'Missing required fields'}, 400)
+        
+        reflection = Reflection(
+            content=content,
+            strategy_id=strategy_id,
+            teacher_id=teacher_id
+        )
+
+        db.session.add(reflection)
+        db.session.commit()
+
+        return make_response(reflection.to_dict(), 201)
+
 
 api.add_resource(Signup, '/signup')
 api.add_resource(CheckSession, '/check-session')
@@ -150,6 +168,8 @@ api.add_resource(Teachers, '/teachers')
 api.add_resource(TeacherById, '/teachers/<int:id>')
 api.add_resource(TeacherReflections, '/teachers/<int:id>/reflections')
 api.add_resource(Strategies, '/strategies')
+api.add_resource(StrategyReflections, '/strategies/<int:strategy_id>/reflections')
+api.add_resource(Reflections, '/reflections')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
