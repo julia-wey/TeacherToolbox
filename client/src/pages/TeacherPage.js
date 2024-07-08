@@ -5,6 +5,7 @@ import { AppContext } from '../context/Context';
 import NavBar from "../components/NavBar.js";
 import TeacherProfile from "../components/TeacherProfile.js";
 import TeacherReflections from "../components/TeacherReflections.js";
+//import AddReflection from "../components/AddReflection.js"
 
 function TeacherPage({ user, setUser }) {
     const navigate = useNavigate();
@@ -12,52 +13,55 @@ function TeacherPage({ user, setUser }) {
     const [teacher, setTeacher] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [reflections, setReflections] = useState([]);
     
+
     useEffect(() => {
-        if (!user) {
-        fetch('/check-session')
+        if (id) {
+        fetch(`/teachers/${id}`)
             .then((resp) => {
                 if (resp.ok) {
                     return resp.json();
                 } else {
                     throw new Error("Failed to fetch teacher data.");
-                }        
+                }
             })
             .then((data) => {
+                //setUser(data);
                 setTeacher(data);
                 setLoading(false);
             })
             .catch((error) => {
-                console.error("Error fetching teacher data:", error);  
-                    navigate('/login');
-                    return;
-            }) 
-        } else {
-            setLoading(false);
+                console.error("Error fetching teacher data:", error);
+                setError(error);
+                setLoading(false);
+            });
         }
-        }, [user, setUser, navigate]);
-    
+         }, [id]);
 
-    // useEffect(() => {
-    //     fetch(`/teachers/${id}`)
-    //         .then((resp) => {
-    //             if (resp.ok) {
-    //                 return resp.json();
-    //             } else {
-    //                 throw new Error("Failed to fetch teacher data.");
-    //             }
-    //         })
-    //         .then((data) => {
-    //             setTeacher(data);
-    //             setLoading(false);
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error fetching teacher data:", error);
-    //             setError(error);
-    //             setLoading(false);
-    //         });
-    //      }, [id]);
+         useEffect(() => {
+            if (id) {
+                fetch(`/teachers/${id}/reflections`)
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Failed to fetch reflections.');
+                        }
+                })
+                .then(data => {
+                    setReflections(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching reflections:', error);
+                });
+            }
+         }, [id]);
 
+        //  const addReflectionToList = (newReflection) => {
+        //     setReflections(previousReflections => [...previousReflections, newReflection]);
+        //  };
+        
          if (loading) {
             return <div>Loading...</div>;
          }
@@ -68,7 +72,11 @@ function TeacherPage({ user, setUser }) {
 
          if (!teacher) {
             return <div>No teacher data available.</div>;
-         }
+         } 
+
+        
+        
+        
             
     return (
         <main>
@@ -89,6 +97,7 @@ function TeacherPage({ user, setUser }) {
                     />      
                 </div>
             </div>  
+            {/* <AddReflection user={user} addReflectionToList={addReflectionToList} /> */}
         </main>
     )
 }
