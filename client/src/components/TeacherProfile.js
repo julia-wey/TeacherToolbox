@@ -104,6 +104,7 @@ function TeacherProfile({ setUser, setTeacher }) {
             {/* <h1>Your Teacher Profile</h1> */}
             <div className="teacher-profile">
                 <h1>Profile</h1>
+                <h1>Profile</h1>
             
             <Card style={{ width: '18rem' }}>
                 <Card.Body>
