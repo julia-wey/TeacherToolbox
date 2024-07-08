@@ -74,6 +74,7 @@ function TeacherPage({ user, setUser }) {
         <main>
             <NavBar />
             <h1>Your Teacher Page</h1>
+            <h1>Your Teacher Page</h1>
             <div className="teacher-page-container" >
                 <div className="left-div-teacherpage">
                     <TeacherReflections />
