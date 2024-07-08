@@ -16,10 +16,10 @@ from models import db
 if __name__ == '__main__':
     #fake = Faker()
     with app.app_context():
-        Teacher.query.delete()
-        Reflection.query.delete()
-        Strategy.query.delete()
-        db.session.commit()
+        #Teacher.query.delete()
+        #Reflection.query.delete()
+        #Strategy.query.delete()
+        #db.session.commit()
 
         t1= Teacher(first_name="Julia", last_name="Wey", username="jwey", team="Social Studies")
         t1.password_hash="password1"

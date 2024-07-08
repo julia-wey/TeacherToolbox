@@ -7,12 +7,15 @@ import AddReflection from "./AddReflection.js";
 function TeacherReflections() {
     const { id } = useParams();
     const { user } = useContext(AppContext);
-    const [reflections, setReflections] =useState([])
+    const [localReflections, setLocalReflections] =useState([])
    
+    const addReflectionToList = (newReflection) => {
+        setLocalReflections([...localReflections, newReflection])
+    }
 
     useEffect(() => {
         if (user && user.reflections) {
-            setReflections(user.reflections);
+            setLocalReflections(user.reflections);
         } else {
         fetch(`/teachers/${id}/reflections`)
             .then(response => {
@@ -23,7 +26,7 @@ function TeacherReflections() {
                 }
             })
             .then(data => {
-                setReflections(data);
+                setLocalReflections(data);
             })
             .catch(error => {
                 console.error('Error fetching reflections:', error);
@@ -42,10 +45,10 @@ function TeacherReflections() {
     
     return (
         <main>
-            <AddReflection user={user} />
+            <AddReflection user={user} addReflectionToList={addReflectionToList} />
             <h1>Your Reflections</h1>
             <div>
-                {reflections.map(reflection => (
+                {localReflections.map(reflection => (
                     <TeacherRefCard 
                     key={reflection.id}
                     content={reflection.content}

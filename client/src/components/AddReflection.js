@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { AppContext } from "../context/Context";
 
-function AddReflection({ user }) {
+function AddReflection({ user, addReflectionToList }) {
     const { user: contextUser } = useContext(AppContext);
     const [show, setShow] = useState(false);
     const [content, setContent] = useState('');
@@ -48,6 +48,7 @@ function AddReflection({ user }) {
         .then(response => response.json())
         .then(data => {
             console.log("Reflection added:", data)
+            addReflectionToList(data);
             handleClose();
         })
         .catch(error => {
@@ -59,7 +60,7 @@ function AddReflection({ user }) {
         return <div>Loading...</div>;
     }
 
-    
+
     return (
         <>
             <Button variant="primary" onClick={handleShow}>
@@ -67,18 +68,10 @@ function AddReflection({ user }) {
             </Button>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Add Reflection</Modal.Title>
+                    <Modal.Title>Add a Reflection</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group controlId="reflectionContent">
-                            <Form.Label>Content</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Enter reflection"
-                                onChange={(e) => setContent(e.target.value)}
-                            />
-                        </Form.Group>
                         <Form.Group controlId="strategtId">
                             <Form.Label>Strategy</Form.Label>
                             <Form.Control
@@ -93,6 +86,14 @@ function AddReflection({ user }) {
                                     </option>
                                 ))}
                             </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="reflectionContent">
+                            <Form.Label>Content</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter reflection"
+                                onChange={(e) => setContent(e.target.value)}
+                            />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
