@@ -2,14 +2,14 @@ import React from "react";
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
-function TeacherRefCard({ content, strategy_id, handleShowUpdateModal, handleDeleteReflection }) {
+function TeacherRefCard({ content, strategy_name, handleShowUpdateModal, handleDeleteReflection }) {
 
     return (
         <div>
             
             <Card className="ref-cards" >
                 <Card.Body>
-                  <Card.Title>{strategy_id}</Card.Title>
+                  <Card.Title>{strategy_name}</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">Criteria Addressed/Assessed: </Card.Subtitle>
                   <Card.Text>{content}</Card.Text>
                   <Button className="secondary-button"

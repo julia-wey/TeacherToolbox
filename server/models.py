@@ -83,7 +83,6 @@ class Strategy(db.Model, SerializerMixin):
     instructions=db.Column(db.Text)
 
     reflections = db.relationship('Reflection', back_populates='strategy', cascade='all, delete-orphan')
-    #get clear on cascade all
 
     def __repr__(self):
         return f"<Strategy {self.id}: {self.name}, {self.description}, {self.instructions}>"
@@ -106,6 +105,20 @@ class Reflection(db.Model, SerializerMixin):
 
     teacher = db.relationship('Teacher', back_populates='reflections')
     strategy = db.relationship('Strategy', back_populates='reflections')
+
+    @property
+    def strategy_name(self):
+        return self.strategy.name if self.strategy else 'Unknown'
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'content': self.content,
+            'strategy_id': self.strategy_id,
+            'teacher_id': self.teacher_id,
+            'strategy_name': self.strategy_name
+        }
+
 
     def __repr__(self):
         return f"<Reflection {self.id}: strategy: {self.strategy_id}, teacher: {self.teacher_id}, refelction:{self.content}>"

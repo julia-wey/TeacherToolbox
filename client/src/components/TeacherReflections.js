@@ -20,25 +20,33 @@ function TeacherReflections() {
     }
 
     useEffect(() => {
-        if (user && user.reflections) {
-            setLocalReflections(user.reflections);
-        } else {
-        fetch(`/teachers/${id}/reflections`)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
+        const fetchReflections = async () => {
+            try {
+                if (user && user.reflections) {
+                    const reflectionsWithNames = user.reflections.map(reflection => ({
+                        ...reflection,
+                        strategy_name: reflection.strategy ? reflection.strategy.name : 'Unknown'
+                    }));
+                    setLocalReflections(reflectionsWithNames);
                 } else {
-                    throw new Error('Failed to fetch reflections.');
-                }
-            })
-            .then(data => {
-                setLocalReflections(data);
-            })
-            .catch(error => {
-                console.error('Error fetching reflections:', error);
-            });
+                    const response = await fetch(`/teachers/${id}/reflections`);
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch reflections.');
+                    }
+                    const data = await response.json();
+                    const reflectionsWithNames = data.map(reflection => ({
+                        ...reflection,
+                        strategy_name: reflection.strategy ? reflection.strategy.name : 'Unknown'
+                }));
+                setLocalReflections(reflectionsWithNames);
+            }
+        } catch (error) {
+            console.error('Error fetching reflections:', error);
         }
-        }, [id, user]);
+    };
+    fetchReflections();
+    }, [id, user]);
+
 
         const handleShowUpdateModal = (reflection) => {
             setSelectedReflection(reflection);
@@ -112,7 +120,7 @@ function TeacherReflections() {
                     <TeacherRefCard 
                     key={reflection.id}
                     content={reflection.content}
-                    strategy_id={reflection.strategy_id}
+                    strategy_name={reflection.strategy_name}
                     teacher_id={reflection.teacher_id}
                     handleShowUpdateModal={() => handleShowUpdateModal(reflection)}
                     handleDeleteReflection={() => handleDeleteReflection(reflection.id)}
@@ -127,12 +135,12 @@ function TeacherReflections() {
                     </Modal.Header>
                     <Modal.Body>
                         <Form onSubmit={handleReflectionUpdate}>
-                            <Form.Group controlId='strategy_id'>
-                                <Form.Label>Strategy ID</Form.Label>
+                            <Form.Group controlId='strategy_name'>
+                                <Form.Label>Strategy Name</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    name="strategy_id"
-                                    value={formValues.strategy_id}
+                                    name="strategy_name"
+                                    value={selectedReflection.strategy_name}
                                     onChange={handleChange}
                                 />
                             </Form.Group>

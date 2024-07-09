@@ -190,7 +190,7 @@ api.add_resource(Teachers, '/teachers')
 api.add_resource(TeacherById, '/teachers/<int:id>')
 api.add_resource(TeacherReflections, '/teachers/<int:id>/reflections')
 api.add_resource(Strategies, '/strategies')
-api.add_resource(StrategyReflections, '/strategies/<int:strategy_id>/reflections')
+api.add_resource(StrategyReflections, '/strategies/<int:strategy_id>')
 api.add_resource(Reflections, '/reflections', '/reflections/<int:reflection_id>')
 
 if __name__ == '__main__':
