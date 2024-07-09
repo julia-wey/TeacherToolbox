@@ -105,15 +105,17 @@ function TeacherProfile({ setUser, setTeacher }) {
             <div className="teacher-profile">
                 <h1>Profile</h1>
             
-            <Card style={{ width: '18rem' }}>
+            <Card className="card" 
+            style={{ width: '25rem' }} background-color="#f6f5f2">
+            
                 <Card.Body>
                   <Card.Title>Name: {formValues.first_name} {formValues.last_name}</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">Team: {formValues.team}</Card.Subtitle>
-                  <Card.Text>
+                  {/* <Card.Text>
                     Is there text to add here????
-                  </Card.Text>
-                  <Button onClick={() => handleShowModal()}>Update Profile</Button>
-                  <Button onClick={() => handleProfileDelete()}>Delete Profile</Button>
+                  </Card.Text> */}
+                  <Button className="secondary-button" onClick={() => handleShowModal()}>Update Profile</Button>
+                  <Button className="secondary-button" onClick={() => handleProfileDelete()}>Delete Profile</Button>
                 </Card.Body>
               </Card>
               </div>
@@ -151,7 +153,7 @@ function TeacherProfile({ setUser, setTeacher }) {
                         onChange={handleProfileChange}
                       />
                     </Form.Group>
-                    <Button variant="primary" type="submit">Update Profile</Button>
+                    <Button className="button" type="submit">Update Profile</Button>
                   </Form>
                 </Modal.Body>
               </Modal>

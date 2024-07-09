@@ -1,22 +1,22 @@
 import React from "react";
 import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 
 function TeacherRefCard({key, content, strategy_id, teacher_id}) {
 
     return (
-        <main>
+        <div>
             
-            <Card style={{ width: '18rem' }}>
+            <Card className="ref-cards" >
                 <Card.Body>
                   <Card.Title>{strategy_id}</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">Criteria Addressed/Assessed: </Card.Subtitle>
                   <Card.Text>{content}</Card.Text>
-                  <Card.Link href="#">Update Reflection</Card.Link>
-                  <Card.Link href="#">Delete Reflection</Card.Link>
-              
+                  <Button className="secondary-button" href="#">Update Reflection</Button>
+                  <Button className="secondary-button" href="#">Delete Reflection</Button>
                 </Card.Body>
               </Card>
-        </main>
+        </div>
     )
 }
 

@@ -48,12 +48,6 @@ function NavBar() {
         <Navbar expand="lg" className="navbar" fixed="top">
             <Container>
                 <Navbar.Brand href='/' className="nav-brand">Teacher Toolbox</Navbar.Brand>
-                    {/* <img
-                        src=
-                        width="30"
-                        height="30"
-                        alt="logo"
-                    /> */}
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ms-auto pt-2">

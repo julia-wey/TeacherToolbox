@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import SignupForm from "../components/SignupForm";
 import NavBar from "../components/NavBar.js";
+import Footer from "../components/Footer.js";
 
 function Signup({ user, setUser }) {
-    const navigate = useNavigate();
 
     return (
-        <main>
+        <div className="signup">
             <NavBar />
-            <h1>Sign Up</h1>
             <SignupForm user={user} setUser={setUser} />
-        </main>
+            <Footer />
+        </div>
     )
 }
 export default Signup;

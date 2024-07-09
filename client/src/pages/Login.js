@@ -3,23 +3,25 @@ import Button from "react-bootstrap/Button";
 import LoginForm from "../components/LoginForm.js";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar.js";
+import Footer from "../components/Footer.js";
 
 function Login({ user, setUser }) {
 
     const navigate = useNavigate();
 
     return (
-        <main>
+        <div className="login-page">
             <NavBar />
-            <h1 className="login-header">Welcome Back to your Teacher Toolbox!</h1>
+            <h1 className="login-heading">Welcome Back to your Teacher Toolbox!</h1>
             <h4 className="signup-loginpage">
                 Don't have an account? &nbsp;
-                <Button className="signup-button-loginpage" onClick={() => navigate("/signup")}>
+                <Button className="secondary-button" onClick={() => navigate("/signup")}>
                     Sign Up
                 </Button>
             </h4>
             <LoginForm user={user} setUser={setUser}/>
-        </main>
+            <Footer />
+        </div>
     )
 }
 

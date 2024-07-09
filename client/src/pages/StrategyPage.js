@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import NavBar from "../components/NavBar.js";
 import StrategyContainer from "../components/StrategyContainer.js";
+import Footer from "../components/Footer.js";
 
 
 function StrategyPage() {
@@ -18,11 +19,11 @@ function StrategyPage() {
     }, [])
 
     return (
-        <main>
+        <div className="strategy-page">
             <NavBar />
-            <h1>HELLO</h1>
             <StrategyContainer strategies={strategies} setStrategies={setStrategies}/>
-        </main>
+            <Footer />
+        </div>
     )
 }
 
