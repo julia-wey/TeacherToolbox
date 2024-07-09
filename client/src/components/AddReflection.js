@@ -62,8 +62,8 @@ function AddReflection({ user, addReflectionToList }) {
 
 
     return (
-        <>
-            <Button variant="primary" onClick={handleShow}>
+        <div className="add-ref-div">
+            <Button className="button" onClick={handleShow}>
                 Add Reflection 
             </Button>
             <Modal show={show} onHide={handleClose}>
@@ -98,15 +98,15 @@ function AddReflection({ user, addReflectionToList }) {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button className="secondary-button" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="secondary" onClick={handleSubmit}>
+                    <Button className="secondary-button" onClick={handleSubmit}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
             </Modal>
-        </>
+        </div>
     );
 }
 

@@ -11,15 +11,14 @@ function StrategyCard({strategy}) {
     const handleCloseReflections = () => setShowReflections(false);
     
     return (
-        <main>
-            <h3>This is the strategy Card</h3>
-            <Card style={{ width: '18rem' }}>
+        <div>
+            <Card className="strat-cards">
                 <Card.Body>
-                  <Card.Title>Strategy Name: {strategy.name} </Card.Title>
-                  <Card.Text>Description: {strategy.description} </Card.Text>
-                  <Card.Text>Instructions: {strategy.instructions} </Card.Text>
+                  <Card.Title className="strat-name">Strategy Name: {strategy.name} </Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">Criteria Addressed/Assessed: </Card.Subtitle>
-                  <Card.Link onClick={handleShowReflections}>See Reflections</Card.Link>
+                  <Card.Text className="strat-description">Description: {strategy.description} </Card.Text>
+                  <Card.Text className="strat-instructions">Instructions: {strategy.instructions} </Card.Text>
+                  <Button className="secondary-button" onClick={handleShowReflections}>See Reflections</Button>
                 </Card.Body>
             </Card>
 
@@ -31,10 +30,10 @@ function StrategyCard({strategy}) {
                     <Reflections strategyId={strategy.id} />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={handleCloseReflections}>Close</Button>
+                    <Button className="secondary-button" onClick={handleCloseReflections}>Close</Button>
                 </Modal.Footer>
             </Modal>
-        </main>
+        </div>
     );
 }
 

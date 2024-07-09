@@ -7,10 +7,10 @@ function StrategyContainer({strategies}) {
    });
     
     return (
-        <main>
-            <h1>Strategy Container Here</h1>
+        <div className="strat-container">
+            <h1 className="heading">Strategies for Teaching and Learning</h1>
             {strategyCards}
-        </main>
+        </div>
     )
 }
 export default StrategyContainer;

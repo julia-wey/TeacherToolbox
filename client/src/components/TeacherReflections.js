@@ -34,19 +34,13 @@ function TeacherReflections() {
         }
         }, [id, user]);
 
-    // const renderRefelctions = reflections.map((reflection) => (
-    //     <TeacherRefCard
-    //         key={reflection.id}
-    //         content={reflection.content}
-    //         strategy_id={reflection.strategy_id}
-    //         teacher_id={reflection.teacher_id}
-    //     />
-    // ));
     
     return (
         <main>
+            <h1 className="heading">Your Strategy Reflections</h1>
+            <h4 className="sub-heading">To add a new strategy reflection, click below.</h4>
             <AddReflection user={user} addReflectionToList={addReflectionToList} />
-            <h1>Your Reflections</h1>
+            
             <div>
                 {localReflections.map(reflection => (
                     <TeacherRefCard 
