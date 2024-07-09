@@ -101,7 +101,6 @@ function TeacherProfile({ setUser, setTeacher }) {
     
     return (
         <main>
-            {/* <h1>Your Teacher Profile</h1> */}
             <div className="teacher-profile">
                 <h1>Profile</h1>
             
@@ -111,9 +110,6 @@ function TeacherProfile({ setUser, setTeacher }) {
                 <Card.Body>
                   <Card.Title>Name: {formValues.first_name} {formValues.last_name}</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">Team: {formValues.team}</Card.Subtitle>
-                  {/* <Card.Text>
-                    Is there text to add here????
-                  </Card.Text> */}
                   <Button className="secondary-button" onClick={() => handleShowModal()}>Update Profile</Button>
                   <Button className="secondary-button" onClick={() => handleProfileDelete()}>Delete Profile</Button>
                 </Card.Body>

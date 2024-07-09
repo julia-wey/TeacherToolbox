@@ -158,6 +158,28 @@ class Reflections(Resource):
         db.session.commit()
 
         return make_response(reflection.to_dict(), 201)
+    
+    def patch(self, reflection_id):
+        reflection = db.session.get(Reflection, reflection_id)
+        if reflection:
+            data = request.json
+            reflection.content = data.get('content', reflection.content)
+            reflection.strategy_id = data.get('strategy_id', reflection.strategy_id)
+
+            db.session.commit()
+
+            return make_response(reflection.to_dict(), 200)
+        else:
+            return make_response({'error': 'Reflection not found.'}, 404)
+        
+    def delete(self, reflection_id):
+        reflection = db.session.get(Reflection, reflection_id)
+        if reflection:
+            db.session.delete(reflection)
+            db.session.commit()
+            return make_response({'message': 'Reflection deleted.'}, 200)
+        else:
+            return make_response({'error': 'Reflection not found.'}, 404)
 
 
 api.add_resource(Signup, '/signup')
@@ -168,8 +190,8 @@ api.add_resource(Teachers, '/teachers')
 api.add_resource(TeacherById, '/teachers/<int:id>')
 api.add_resource(TeacherReflections, '/teachers/<int:id>/reflections')
 api.add_resource(Strategies, '/strategies')
-api.add_resource(StrategyReflections, '/strategies/<int:strategy_id>/reflections')
-api.add_resource(Reflections, '/reflections')
+api.add_resource(StrategyReflections, '/strategies/<int:strategy_id>')
+api.add_resource(Reflections, '/reflections', '/reflections/<int:reflection_id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
