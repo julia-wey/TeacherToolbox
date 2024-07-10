@@ -42,7 +42,6 @@ function SignupForm({ setUser }) {
                         resp.json().then((user) => {
                             setUser(user);
                             navigate('/');
-                            //navigate somewhere after login/signup (teacher page) 
                         });
                     } else {
                         console.log("errors")

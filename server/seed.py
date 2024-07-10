@@ -6,21 +6,14 @@ from models import Teacher, Strategy, Reflection
 # Standard library imports
 from random import randint, choice as rc
 
-# Remote library imports
-from faker import Faker
-
 # Local imports
 from app import app
 from models import db
 
 if __name__ == '__main__':
-    #fake = Faker()
-    with app.app_context():
-        #Teacher.query.delete()
-        #Reflection.query.delete()
-        #Strategy.query.delete()
-        #db.session.commit()
 
+    with app.app_context():
+        
         t1= Teacher(first_name="Julia", last_name="Wey", username="jwey", team="Social Studies")
         t1.password_hash="password1"
         t2= Teacher(first_name="Dan", last_name="Burgoyne", username="dburgoyne", team="ELA")

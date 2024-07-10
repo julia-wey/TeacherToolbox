@@ -14,7 +14,7 @@ function Login({ user, setUser }) {
             <NavBar />
             <h1 className="login-heading">Welcome Back to your Teacher Toolbox!</h1>
             <h4 className="signup-loginpage">
-                Don't have an account? &nbsp;
+                Don't have an account yet? &nbsp;
                 <Button className="secondary-button" onClick={() => navigate("/signup")}>
                     Sign Up
                 </Button>

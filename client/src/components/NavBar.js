@@ -39,11 +39,6 @@ function NavBar() {
         }
     }
     
-    // function handleAboutClick() {
-    //     navigate('/#about')
-    // }
-            
-    
     return (
         <Navbar expand="lg" className="navbar" fixed="top">
             <Container>
@@ -53,8 +48,6 @@ function NavBar() {
                 <Nav className="ms-auto pt-2">
                     <Nav.Link className="nav-link" href="/teachers/:id" onClick={handleTeacherPageClick}>Teacher Page</Nav.Link>
                     <Nav.Link className="nav-link" href="/strategies">Strategies</Nav.Link>
-                    {/* <Nav.Link className="nav-link" href="/signup">Sign Up</Nav.Link>
-                    <Nav.Link className="nav-link" href="/login">Login</Nav.Link> */}
                     {user === null || user === undefined ? <Nav.Link className="nav-link" href="/signup">Signup</Nav.Link>: ""}
                 </Nav>
                     {user === null || user === undefined ? 
